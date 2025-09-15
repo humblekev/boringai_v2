@@ -45,6 +45,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentStep = 1;
 
+    // AI Chat Widget elements
+    const chatWidget = document.getElementById('ai-chat-widget');
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatContainer = document.getElementById('chat-container');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatIcon = chatToggle.querySelector('.chat-icon');
+    const closeIcon = chatToggle.querySelector('.close-icon');
+
+    let isChatOpen = false;
+    let conversationHistory = [];
+
     // Business-specific automation tasks mapping
     const automationTasksByBusiness = {
         'e-commerce': [
@@ -265,6 +278,136 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset everything and go back to home
         location.reload();
     });
+
+    // AI Chat Widget functionality
+    chatToggle.addEventListener('click', toggleChat);
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !chatInput.disabled) {
+            sendMessage();
+        }
+    });
+
+    function toggleChat() {
+        isChatOpen = !isChatOpen;
+
+        if (isChatOpen) {
+            chatContainer.style.display = 'flex';
+            chatIcon.style.display = 'none';
+            closeIcon.style.display = 'block';
+            // Enable chat input for testing with placeholder responses
+            chatInput.disabled = false;
+            chatSend.disabled = false;
+            chatInput.focus();
+        } else {
+            chatContainer.style.display = 'none';
+            chatIcon.style.display = 'block';
+            closeIcon.style.display = 'none';
+        }
+    }
+
+    function addMessage(content, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+
+        if (typeof content === 'string') {
+            // Split content by line breaks and create paragraphs
+            const paragraphs = content.split('\n').filter(p => p.trim());
+            paragraphs.forEach(paragraph => {
+                const p = document.createElement('p');
+                p.textContent = paragraph;
+                contentDiv.appendChild(p);
+            });
+        } else {
+            contentDiv.appendChild(content);
+        }
+
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message typing-message';
+        typingDiv.innerHTML = `
+            <div class="typing-indicator">
+                <span>AI is thinking</span>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return typingDiv;
+    }
+
+    function removeTypingIndicator(typingElement) {
+        if (typingElement && typingElement.parentNode) {
+            typingElement.parentNode.removeChild(typingElement);
+        }
+    }
+
+    async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, true);
+        conversationHistory.push({ role: 'user', content: message });
+
+        // Clear input
+        chatInput.value = '';
+        chatInput.disabled = true;
+        chatSend.disabled = true;
+
+        // Show typing indicator
+        const typingIndicator = showTypingIndicator();
+
+        try {
+            // TODO: Replace with actual API call
+            // For now, show a placeholder response
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API delay
+
+            removeTypingIndicator(typingIndicator);
+
+            // Placeholder response - will be replaced with actual LangGraph API
+            const response = generatePlaceholderResponse(message);
+            addMessage(response);
+            conversationHistory.push({ role: 'assistant', content: response });
+
+        } catch (error) {
+            removeTypingIndicator(typingIndicator);
+            addMessage('I apologize, but I\'m currently experiencing technical difficulties. Please try again later or use our contact form for immediate assistance.');
+            console.error('Chat error:', error);
+        }
+
+        // Re-enable input
+        chatInput.disabled = false;
+        chatSend.disabled = false;
+        chatInput.focus();
+    }
+
+    // Placeholder response generator (will be replaced with LangGraph)
+    function generatePlaceholderResponse(userMessage) {
+        const responses = [
+            "That's an interesting challenge. From a business perspective, automation could potentially streamline that process. Can you tell me more about the current workflow and where you see the biggest bottlenecks?",
+            "I understand the business impact you're describing. Many companies face similar challenges. Have you considered which tasks take up the most time for your team currently?",
+            "That sounds like a common pain point in your industry. Let me ask - what would success look like if we could automate parts of this process? What metrics would improve?",
+            "From a business efficiency standpoint, this type of challenge often has multiple automation opportunities. What's the most manual, repetitive part of your current process?",
+            "I see the business value in addressing this. Before we explore solutions, help me understand - how many people are currently involved in this process, and how much time does it typically take?"
+        ];
+
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
 
     // Handle business type selection
     businessType.addEventListener('change', function() {
