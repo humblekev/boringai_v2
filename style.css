@@ -31,27 +31,20 @@ body {
 }
 
 .logo a {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: block;
     text-decoration: none;
-    color: #333;
     transition: all 0.3s ease;
 }
 
 .logo a:hover {
-    color: #d2775e;
+    transform: scale(1.05);
 }
 
 .logo-img {
-    height: 32px;
-    width: 32px;
+    height: 40px;
+    width: auto;
     object-fit: contain;
-}
-
-.logo span {
-    font-size: 1.8rem;
-    font-weight: 700;
+    display: block;
 }
 
 .nav-menu {
