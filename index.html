@@ -5,89 +5,204 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BoringAI - Practical AI & Automation Solutions</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <h1>BoringAI</h1>
+                    <h1><a href="#" id="logoBtn">BoringAI</a></h1>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
+                    <li><a href="#" class="btn-nav">Get Started For Free</a></li>
                     <li><a href="#services">Services</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" id="contactNavBtn">Contact</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
     <main>
-        <section id="home" class="hero">
+        <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h1>BoringAI</h1>
-                    <h2>Practical AI & Automation Solutions</h2>
-                    <p>We make AI work for your business. No hype, no fluff - just reliable automation that delivers results.</p>
-                    <div class="cta-buttons">
-                        <a href="#services" class="btn primary">Our Services</a>
-                        <a href="#contact" class="btn secondary">Get Started</a>
+                    <h1 class="hero-title">
+                        <span class="line1">We Make</span>
+                        <span class="line2">AI Boring</span>
+                        <span class="line3">& Useful</span>
+                    </h1>
+                    <p class="hero-subtitle">No impossible promises. You only pay if it works.</p>
+                    <a href="#" class="btn-primary" id="getStartedBtn">Get Started for Free</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Section (Initially Hidden) -->
+        <section class="form-section" id="formSection">
+            <div class="container">
+                <div class="form-content">
+                    <!-- Restart Button -->
+                    <button class="restart-btn" id="restartBtn">← Restart</button>
+
+                    <!-- Progress Indicator -->
+                    <div class="progress-indicator">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="progress-text" id="progressText">Step 1 of 4</p>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="form-step" id="step1">
+                        <h2 class="form-title">Let's discuss your solution</h2>
+                        <p class="form-subtitle">We can't promise miracles but we can promise honesty. Let us co-design a solution for you. You only pay if it works and actually saves you time and money.</p>
+                        <button class="btn-primary" id="nextBtn">Next</button>
+                    </div>
+
+                    <!-- Step 2: Business Type -->
+                    <div class="form-step" id="step2" style="display: none;">
+                        <h2 class="form-title">Your business type</h2>
+                        <div class="form-input-group">
+                            <select class="business-select" id="businessType">
+                                <option value="">Select your business type...</option>
+                                <option value="e-commerce">E-commerce & Online Retail</option>
+                                <option value="saas">Software as a Service (SaaS)</option>
+                                <option value="consulting">Consulting & Professional Services</option>
+                                <option value="healthcare">Healthcare & Medical</option>
+                                <option value="financial">Financial Services & Fintech</option>
+                                <option value="real-estate">Real Estate</option>
+                                <option value="manufacturing">Manufacturing & Supply Chain</option>
+                                <option value="restaurant">Restaurant & Food Service</option>
+                                <option value="fitness">Fitness & Wellness</option>
+                                <option value="education">Education & Training</option>
+                                <option value="marketing">Marketing & Advertising</option>
+                                <option value="construction">Construction & Contracting</option>
+                                <option value="nonprofit">Non-profit & NGO</option>
+                                <option value="automotive">Automotive</option>
+                                <option value="legal">Legal Services</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <input type="text" class="other-input" id="otherBusiness" placeholder="Please specify..." style="display: none;">
+                        </div>
+                        <button class="btn-primary" id="step2NextBtn" disabled>Next</button>
+                    </div>
+
+                    <!-- Step 3: Automation Tasks -->
+                    <div class="form-step" id="step3" style="display: none;">
+                        <h2 class="form-title">What tasks can we automate for you?</h2>
+                        <p class="form-subtitle">Select all that apply.</p>
+                        <div class="form-input-group">
+                            <div class="checkbox-group" id="automationTasks">
+                                <!-- Dynamic tasks will be populated here -->
+                            </div>
+                            <div class="other-task-input" id="otherTaskContainer" style="display: none;">
+                                <input type="text" class="form-input" id="otherTaskInput" placeholder="Please specify other tasks...">
+                            </div>
+                        </div>
+                        <button class="btn-primary" id="step3NextBtn" disabled>Next</button>
+                    </div>
+
+                    <!-- Step 4: Contact Information -->
+                    <div class="form-step" id="step4" style="display: none;">
+                        <h2 class="form-title">Let's get in touch</h2>
+                        <p class="form-subtitle">Let's co-design and transform your business together.</p>
+                        <div class="form-input-group">
+                            <input type="text" class="form-input" id="userName" placeholder="Your full name" required>
+                            <input type="email" class="form-input" id="userEmail" placeholder="Your email address" required>
+                        </div>
+                        <button class="btn-primary" id="submitBtn" disabled>Submit</button>
+                    </div>
+
+                    <!-- Success State -->
+                    <div class="form-step" id="successStep" style="display: none;">
+                        <div class="success-animation">
+                            <!-- Success checkmark -->
+                            <div class="success-checkmark">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+
+                            <!-- Success content with animation -->
+                            <div class="success-content">
+                                <h2 class="form-title success-title">You've taken the first (most important) step.</h2>
+                                <p class="form-subtitle">We'll be in touch.</p>
+                                <button class="btn-primary" id="backToHomeBtn">Back to Home</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="services" class="services">
+        <!-- Contact Section (Initially Hidden) -->
+        <section class="contact-section" id="contactSection" style="display: none;">
             <div class="container">
-                <h2>What We Do</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <h3>Process Automation</h3>
-                        <p>Streamline repetitive tasks and workflows with intelligent automation solutions.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Data Analysis</h3>
-                        <p>Extract insights from your data with practical AI-powered analytics.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Custom AI Solutions</h3>
-                        <p>Tailored artificial intelligence applications designed for your specific needs.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="contact-content">
+                    <!-- Restart Button -->
+                    <button class="restart-btn" id="contactRestartBtn">← Back to Home</button>
 
-        <section id="about" class="about">
-            <div class="container">
-                <h2>Why BoringAI?</h2>
-                <div class="about-content">
-                    <p>In a world full of AI hype, we focus on what actually works. Our solutions are thoroughly tested, reliable, and designed to solve real business problems.</p>
-                    <ul>
-                        <li>Proven track record of successful implementations</li>
-                        <li>Focus on practical, measurable results</li>
-                        <li>No unnecessary complexity or buzzwords</li>
-                        <li>Ongoing support and maintenance</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+                    <!-- Contact Header -->
+                    <div class="contact-header">
+                        <h1 class="contact-title">Talk To Us</h1>
+                        <p class="contact-subtitle">Let's have a straightforward conversation about how AI can help your business.<br>No sales pitch, just honest advice.</p>
+                    </div>
 
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2>Get In Touch</h2>
-                <p>Ready to implement practical AI solutions? Let's discuss your needs.</p>
-                <div class="contact-info">
-                    <p>Email: hello@boringai.com.au</p>
-                    <p>We'll respond within 24 hours.</p>
+                    <!-- Contact Content Grid -->
+                    <div class="contact-grid">
+                        <!-- Contact Info -->
+                        <div class="contact-info">
+                            <h3>Get in Touch</h3>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Email</h4>
+                                    <p>hello@boringai.com.au</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div class="contact-form">
+                            <form id="contactForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="contactName">Name</label>
+                                        <input type="text" id="contactName" placeholder="Your name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactEmail">Email</label>
+                                        <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactPhone">Phone (optional)</label>
+                                    <input type="tel" id="contactPhone" placeholder="Your phone number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactQuery">Query</label>
+                                    <textarea id="contactQuery" placeholder="What challenges are you trying to solve? What processes could be automated?" rows="6" required></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary" id="contactSubmitBtn">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Success Animation Container -->
+    <div id="success-animation-container"></div>
+
     <footer>
         <div class="container">
-            <p>&copy; 2024 BoringAI. All rights reserved.</p>
+            <p>&copy; 2025 BoringAI. All rights reserved.</p>
         </div>
     </footer>
 </body>
