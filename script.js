@@ -373,16 +373,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const typingIndicator = showTypingIndicator();
 
         try {
-            // TODO: Replace with actual API call
-            // For now, show a placeholder response
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API delay
+            // Call the backend API
+            const response = await fetch('http://localhost:8000/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    conversation_history: conversationHistory,
+                    user_context: {}
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
 
             removeTypingIndicator(typingIndicator);
 
-            // Placeholder response - will be replaced with actual LangGraph API
-            const response = generatePlaceholderResponse(message);
-            addMessage(response);
-            conversationHistory.push({ role: 'assistant', content: response });
+            // Add AI response
+            addMessage(data.response);
+            conversationHistory.push({ role: 'assistant', content: data.response });
 
         } catch (error) {
             removeTypingIndicator(typingIndicator);
