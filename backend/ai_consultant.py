@@ -231,10 +231,19 @@ Guidelines for this response:
         formatted = []
 
         for msg in messages:
-            if msg["role"] == "user":
-                formatted.append(HumanMessage(content=msg["content"]))
-            elif msg["role"] == "assistant":
-                formatted.append(AIMessage(content=msg["content"]))
+            # Handle both dict and object formats
+            if isinstance(msg, dict):
+                role = msg.get("role", "")
+                content = msg.get("content", "")
+            else:
+                # Handle ChatMessage objects
+                role = getattr(msg, "role", "")
+                content = getattr(msg, "content", "")
+
+            if role == "user":
+                formatted.append(HumanMessage(content=content))
+            elif role == "assistant":
+                formatted.append(AIMessage(content=content))
 
         return formatted
 
@@ -243,10 +252,18 @@ Guidelines for this response:
         challenges = []
 
         for msg in messages:
-            if msg["role"] == "user":
-                content = msg["content"].lower()
-                if any(keyword in content for keyword in ["problem", "challenge", "difficult", "manual", "time consuming"]):
-                    challenges.append(msg["content"][:100])
+            # Handle both dict and object formats
+            if isinstance(msg, dict):
+                role = msg.get("role", "")
+                content = msg.get("content", "")
+            else:
+                role = getattr(msg, "role", "")
+                content = getattr(msg, "content", "")
+
+            if role == "user":
+                content_lower = content.lower()
+                if any(keyword in content_lower for keyword in ["problem", "challenge", "difficult", "manual", "time consuming"]):
+                    challenges.append(content[:100])
 
         return challenges[:3]  # Limit to top 3
 
@@ -255,20 +272,28 @@ Guidelines for this response:
         context = {}
 
         for msg in messages:
-            if msg["role"] == "user":
-                content = msg["content"].lower()
+            # Handle both dict and object formats
+            if isinstance(msg, dict):
+                role = msg.get("role", "")
+                content = msg.get("content", "")
+            else:
+                role = getattr(msg, "role", "")
+                content = getattr(msg, "content", "")
+
+            if role == "user":
+                content_lower = content.lower()
 
                 # Extract industry hints
                 industries = ["healthcare", "finance", "retail", "manufacturing", "saas", "ecommerce"]
                 for industry in industries:
-                    if industry in content:
+                    if industry in content_lower:
                         context["industry"] = industry
                         break
 
                 # Extract company size hints
-                if any(size in content for size in ["startup", "small business"]):
+                if any(size in content_lower for size in ["startup", "small business"]):
                     context["company_size"] = "small"
-                elif any(size in content for size in ["enterprise", "large company"]):
+                elif any(size in content_lower for size in ["enterprise", "large company"]):
                     context["company_size"] = "large"
 
         return context
