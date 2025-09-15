@@ -30,20 +30,28 @@ body {
     align-items: center;
 }
 
-.logo h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #333;
-}
-
-.logo h1 a {
+.logo a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     text-decoration: none;
-    color: inherit;
+    color: #333;
     transition: all 0.3s ease;
 }
 
-.logo h1 a:hover {
+.logo a:hover {
     color: #d2775e;
+}
+
+.logo-img {
+    height: 32px;
+    width: 32px;
+    object-fit: contain;
+}
+
+.logo span {
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
 .nav-menu {
