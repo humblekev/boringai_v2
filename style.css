@@ -62,16 +62,18 @@ body {
 }
 
 .btn-nav {
-    background: #d2775e !important;
+    background: #2563eb !important;
     color: white !important;
     padding: 12px 24px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
 }
 
 .btn-nav:hover {
-    background: #c06a52 !important;
+    background: #1d4ed8 !important;
     transform: translateY(-1px);
+    box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.35);
 }
 
 /* Hero Section */
@@ -126,7 +128,7 @@ body {
 }
 
 .btn-primary {
-    background: #d2775e;
+    background: #2563eb;
     color: white;
     padding: 16px 32px;
     border: none;
@@ -136,12 +138,13 @@ body {
     font-size: 1.1rem;
     transition: all 0.3s ease;
     display: inline-block;
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover {
-    background: #c06a52;
+    background: #1d4ed8;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(210, 119, 94, 0.3);
+    box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.35);
 }
 
 /* Responsive Design */
